@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -57,18 +56,17 @@ internal static class NetworkProbe
     {
         try
         {
-            using var response = await HttpClient.GetAsync("https://api.ipify.org?format=json", cancellationToken);
+            using var response = await HttpClient.GetAsync("https://api.ipify.org", cancellationToken);
             response.EnsureSuccessStatusCode();
 
-            await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
-            var payload = await JsonSerializer.DeserializeAsync<PublicIPResponse>(stream, cancellationToken: cancellationToken);
+            var payload = (await response.Content.ReadAsStringAsync(cancellationToken)).Trim();
 
-            if (string.IsNullOrWhiteSpace(payload?.Ip))
+            if (string.IsNullOrWhiteSpace(payload))
             {
                 return ("n/a", "Error: unreadable response.");
             }
 
-            return (payload.Ip, "Source: api.ipify.org");
+            return (payload, "Source: api.ipify.org");
         }
         catch (OperationCanceledException)
         {
@@ -324,6 +322,4 @@ internal static class NetworkProbe
 
     private static bool IsTailscaleIPv6(string address)
         => address.StartsWith("fd7a:115c:a1e0:", StringComparison.OrdinalIgnoreCase);
-
-    private sealed record PublicIPResponse(string Ip);
 }
