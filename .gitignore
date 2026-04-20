@@ -7,5 +7,5 @@ build/
 **/obj/
 
 !dist/
-!dist/NetworkIPs.exe
-!dist/NetworkIPs-linux
+!dist/nip.exe
+!dist/nip-linux

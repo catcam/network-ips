@@ -1,4 +1,4 @@
-# Network IPs
+# nip
 
 Minimal desktop utility set that shows:
 
@@ -9,45 +9,45 @@ Minimal desktop utility set that shows:
 
 Windows portable build included:
 
-- `dist/NetworkIPs.exe`
+- `dist/nip.exe`
 
 Linux portable build included:
 
-- `dist/NetworkIPs-linux`
+- `dist/nip-linux`
 
 macOS/Linux CLI included:
 
-- `cli/network-ips`
+- `cli/nip`
 
 ## Files
 
-- `ExternalIPApp/main.swift` - app source
-- `ExternalIPApp/Info.plist` - bundle metadata
-- `ExternalIPApp/IconGenerator.swift` - generates the Art Deco app icon
-- `NetworkIPs.Windows/` - Avalonia desktop app source
-- `cli/network-ips` - portable Bash CLI for macOS/Linux
-- `dist/NetworkIPs.exe` - portable Windows executable
-- `dist/NetworkIPs-linux` - portable Linux executable
+- `Nip.MacApp/main.swift` - macOS app source
+- `Nip.MacApp/Info.plist` - macOS bundle metadata
+- `Nip.MacApp/IconGenerator.swift` - generates the app icon
+- `Nip.Desktop/` - Avalonia desktop app source
+- `cli/nip` - portable Bash CLI for macOS/Linux
+- `dist/nip.exe` - portable Windows executable
+- `dist/nip-linux` - portable Linux executable
 
 ## Build
 
 Apple Silicon:
 
 ```bash
-swiftc ExternalIPApp/main.swift -o /tmp/ExternalIP.app/Contents/MacOS/ExternalIP -framework AppKit -framework Foundation
+swiftc Nip.MacApp/main.swift -o /tmp/nip.app/Contents/MacOS/nip -framework AppKit -framework Foundation
 ```
 
 Intel:
 
 ```bash
-swiftc -target x86_64-apple-macos13.0 ExternalIPApp/main.swift -o /tmp/ExternalIP-x86_64 -framework AppKit -framework Foundation
+swiftc -target x86_64-apple-macos13.0 Nip.MacApp/main.swift -o /tmp/nip-x86_64 -framework AppKit -framework Foundation
 ```
 
 Icon:
 
 ```bash
-swiftc ExternalIPApp/IconGenerator.swift -o /tmp/IconGenerator -framework AppKit -framework Foundation
-/tmp/IconGenerator /tmp/AppIcon.iconset ExternalIPApp/AppIcon.icns
+swiftc Nip.MacApp/IconGenerator.swift -o /tmp/IconGenerator -framework AppKit -framework Foundation
+/tmp/IconGenerator /tmp/AppIcon.iconset Nip.MacApp/AppIcon.icns
 ```
 
 Windows portable `.exe`:
@@ -55,8 +55,8 @@ Windows portable `.exe`:
 ```bash
 export DOTNET_ROOT=/opt/homebrew/opt/dotnet/libexec
 export PATH=$DOTNET_ROOT:$PATH
-dotnet publish NetworkIPs.Windows/NetworkIPs.Windows.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true /p:TrimMode=partial /p:DebugType=None /p:DebugSymbols=false
-cp NetworkIPs.Windows/bin/Release/net10.0/win-x64/publish/NetworkIPs.Windows.exe dist/NetworkIPs.exe
+dotnet publish Nip.Desktop/Nip.Desktop.csproj -c Release -r win-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true /p:TrimMode=partial /p:DebugType=None /p:DebugSymbols=false
+cp Nip.Desktop/bin/Release/net10.0/win-x64/publish/nip.exe dist/nip.exe
 ```
 
 Linux portable binary:
@@ -64,16 +64,16 @@ Linux portable binary:
 ```bash
 export DOTNET_ROOT=/opt/homebrew/opt/dotnet/libexec
 export PATH=$DOTNET_ROOT:$PATH
-dotnet publish NetworkIPs.Windows/NetworkIPs.Windows.csproj -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true /p:TrimMode=partial /p:DebugType=None /p:DebugSymbols=false
-cp NetworkIPs.Windows/bin/Release/net10.0/linux-x64/publish/NetworkIPs.Windows dist/NetworkIPs-linux
+dotnet publish Nip.Desktop/Nip.Desktop.csproj -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=true /p:TrimMode=partial /p:DebugType=None /p:DebugSymbols=false
+cp Nip.Desktop/bin/Release/net10.0/linux-x64/publish/nip dist/nip-linux
 ```
 
 macOS/Linux CLI:
 
 ```bash
-./cli/network-ips
-./cli/network-ips --no-trace
-./cli/network-ips --json
+./cli/nip
+./cli/nip --no-trace
+./cli/nip --json
 ```
 
 ## Notes
